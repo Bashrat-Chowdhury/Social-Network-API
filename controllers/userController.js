@@ -79,6 +79,26 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+
+  //Update User
+  async updateUser(req, res) {
+    try {
+      const user = await User.findOneAndUpdate(
+        { _id: req.params.userId },
+        { $set: req.body },
+        { new: true }
+      );
+
+      if (!user) {
+        res.status(404).json({ message: "No user with this id!" });
+      }
+
+      res.json(user);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+
   // Remove a friend of the user
   async deleteUserFriend(req, res) {
     try {
