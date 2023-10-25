@@ -75,7 +75,7 @@ module.exports = {
     console.log(req.body);
 
     try {
-      const thought = await thought.findOneAndUpdate(
+      const thought = await Thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
         { $push: { reactions: req.body } },
         { new: true }
@@ -95,10 +95,11 @@ module.exports = {
   // Remove a reaction of the thought
   async removeReaction(req, res) {
     try {
-      const thought = await thought.findOneAndUpdate(
+      const thought = await Thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
-        { $pull: { reaction: { reactionId: req.params.reactionId } } },
-        { new: true }
+        { $pull: { reactions: { reactionId: req.params.reactionId } } },
+        { new: true },
+        console.log(req.params)
       );
 
       if (!thought) {
