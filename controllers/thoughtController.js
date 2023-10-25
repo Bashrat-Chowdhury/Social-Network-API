@@ -1,4 +1,5 @@
 const { User, Thought } = require("../models");
+const { getUsers } = require("./userController");
 
 module.exports = {
   // Get all thoughts
@@ -42,10 +43,10 @@ module.exports = {
         );
 
         res.json(thought);
-      }
 
-      if (!user) {
-        return res.status(404).json({ message: "No user with that ID" });
+        if (!user) {
+          return res.status(404).json({ message: "No user with that ID" });
+        }
       }
     } catch (err) {
       console.log(err);
@@ -66,6 +67,25 @@ module.exports = {
       res.json({ message: "Thought successfully deleted" });
     } catch (err) {
       console.log(err);
+      res.status(500).json(err);
+    }
+  },
+
+  //update thought
+  async updateThought(req, res) {
+    try {
+      const thought = await Thought.findOneAndUpdate(
+        { _id: req.params.thoughtId },
+        { $set: req.body },
+        { new: true }
+      );
+
+      if (!thought) {
+        res.status(404).json({ message: "No thought with this id!" });
+      }
+
+      res.json(thought);
+    } catch (err) {
       res.status(500).json(err);
     }
   },
