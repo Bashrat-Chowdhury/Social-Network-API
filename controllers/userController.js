@@ -84,7 +84,7 @@ module.exports = {
     try {
       const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $pull: { friend: { friendId: req.params.friendId } } },
+        { $pull: { friends: req.params.friendId } },
         { new: true }
       );
 
